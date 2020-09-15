@@ -26,7 +26,7 @@ myVideo.muted = true;
 
 
 navigator.mediaDevices.getUserMedia({
-  audio: true,
+  audio: false,
   video: true,
     
   }).then(stream=>{
@@ -246,158 +246,7 @@ $("#profile-img").removeClass();
 $("#status-options").removeClass("active");
 });
 
-// function newMessage() {
-// message = $(".message-input input").val();
-// if($.trim(message) == '') {
-// return false;
-// }
-// $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
-// $('.message-input input').val(null);
-// $('.contact.active .preview').html('<span>You: </span>' + message);
-// $(".messages").animate({ scrollTop: $(document).height() }, "fast");
-// };
 
-// $('.submit').click(function() {
-// newMessage();
-// });
-
-// $(window).on('keydown', function(e) {
-// if (e.which == 13) {
-// newMessage();
-// return false;
-// } 
-// });
- 
-  //ends...
-
-//   function updateAvailableuser(userId,totalpeerId){
-//     var usercount=0
-//     var jsonData=JSON.stringify(totalpeerId)
-//     console.log("allusers::: "+jsonData) 
-//     console.log("whos id "+myPeer.id)
-    
-//     var diff=new Object()
-//     diff = Object.keys(totalpeerId).reduce((diff, key) => {
-//       if (myPeer.id === key) return diff
-//       return {
-//         ...diff,
-//         [key]: totalpeerId[key]
-//       }
-//     }, {})  
-    
-//     console.log(diff)  
-//   //$(document).find('#userdiv').show()
-
-//   //$("#userdiv").empty() 
-//   //$("#allusers li").remove() 
-//   var avaliableLi=[]  
-//   if(Object.keys(diff).length!=0){
-  
-//     if($('ul#allusers li').length>=1){
- 
-//       $('#allusers li').each(function(){
-//         console.log("d,ada,"+$(this).attr('value'))
-//         avaliableLi.push($(this).attr('value'))
-//       }) 
-//       if(Object.keys(diff).length>avaliableLi.length){
-         
-//                 var litoadd=new Object();
-         
-//                 litoadd = Object.keys(diff).reduce((litoadd, key) => {
-//                 for(var j=0;j<avaliableLi.length;j++){
-//                 if (avaliableLi[j]=== key) return litoadd}
-//                 return {
-//                   ...litoadd,   
-//                    [key]: diff[key]
-//                 } 
-//               }, {})
-                
-             
-//             console.log(litoadd) 
-
-//       for(i=0;i<Object.keys(litoadd).length;i++){ 
-//         var id=Object.keys(litoadd)[i]
-//         var name=Object.values(litoadd)[i]
-
-//       $('#allusers').append('<li class="contact" value='+id+'><div class="wrap"><span class="contact-status online"><span class="badge">1</span></span><img src="http://emilcarlsson.se/assets/louislitt.png" alt="" /><div class="meta"><p class="name">'+name+'</p> <p class="preview">You just got LITT up, Mike.</p> </div></div></li>')
-//       $("#total-users-online").text($('ul#allusers li').length)
-//       //$("#userdiv").append('<div class= "example '+id+' "style="display:none;"> <div class="contact-profile '+id+'" style="display:none;" ><img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" /><p>'+name+'</p></div><div class="messages '+id+'" style="display:none;" ><ul id="appendmsg"></ul></div><div class="message-input '+id+' "style="display:none;"><div class="wrap"><input type="text" placeholder="Write your message..." /><button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button></div></div></div>')
-//       $("#userdiv").append('<div id= '+id+' style="display:none;"> <div class="contact-profile " ><img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" /><p>'+name+'</p></div><div class="messages" ><ul id="appendmsg"></ul></div><div class="message-input "><div class="wrap"><input type="text" placeholder="Write your message..." /><button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button></div></div></div>')
-
-
-   
-//       }
- 
-//       }else{ 
-//           //user is  disconnected
-//                 var result = '';
-//                 var keys = Object.keys(diff);
-
-//                 for(var j=0;j<avaliableLi.length;j++){
-
-//                 if (!keys.includes(avaliableLi[j])) {
-                  
-//                 console.log(":::::::::::;to be deleted from li;"+avaliableLi[j]);
-//                 result=avaliableLi[j]
-//                 }
-//                 } 
-
-//                 //removing from the div
-//                 $('#allusers li').each(function(){
-//                   if($(this).attr('value')==result){
-//                    $(this).remove() 
-//                    $('#userdiv').find("#"+result).remove() 
-
-            
-//                   }   
-//                 })  
-//                 $("#total-users-online").text($('ul#allusers li').length)
-
-//       }  
- 
-    
-         
- 
-//     }else{
-//       for(i=0;i<Object.keys(diff).length;i++){
-//         //var result=jsonData.split(',')[2].split(':')[1].replace(/['"]+/g, '').replace(/[{}]+/g, '')
-//         var id=Object.keys(diff)[i]
-//         var name=Object.values(diff)[i]
- 
-//       $('#allusers').append('<li class="contact" value='+id+'><div class="wrap"><span class="contact-status online"><span class="badge">1</span></span><img src="http://emilcarlsson.se/assets/louislitt.png" alt="" /><div class="meta"><p class="name">'+name+'</p><p class="notification"></p> <p class="preview">You just got LITT up, Mike.</p> </div></div></li>')
-//      $("#userdiv").append('<div id= '+id+' style="display:none;"> <div class="contact-profile "  ><img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" /><p>'+name+'</p></div><div class="messages" ><ul id="appendmsg"></ul></div><div class="message-input "><div class="wrap"><input type="text" placeholder="Write your message..." /><button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button></div></div></div>')
-//      $("#total-users-online").text($('ul#allusers li').length)
-
- 
-//       }
-
-//     }    
-
-     
-//   //} 
-// }else{ 
-//     $('#allusers li').each(function(){
-//       console.log("d,ada,"+$(this).attr('value'))
-//       if($(this).attr('value')==userId){
-//        $(this).remove()
-//        $('#userdiv').find("#"+userId).remove() 
-
-//       }   
-//     }) 
-//     $("#total-users-online").text($('ul#allusers li').length)
-
-
-
-
-// }
-    
-
-
-  
-
-
-
-//   }
   //making of chat starts.......
  
   $(document).on('keyup',".message-input",function (e) {
@@ -409,7 +258,7 @@ $("#status-options").removeClass("active");
       $(document).find(".messages").animate({ scrollTop: $(document).height() }, "fast");
       appendtext(senderId,message)
       }
-    }  
+    }   
 });  
 $(document).on('click','.submit',function(e){
   
