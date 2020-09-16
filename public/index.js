@@ -15,7 +15,7 @@ var senderidtoappend=""
 const myPeer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'             //should be on the same server as application
+    port: '3010'             //should be on the same server as application
   })
 
 //enabaling video here//
@@ -26,7 +26,7 @@ myVideo.muted = true;
 
 
 navigator.mediaDevices.getUserMedia({
-  audio: true,
+  audio: false,
   video: true,
     
   }).then(stream=>{
@@ -42,6 +42,7 @@ navigator.mediaDevices.getUserMedia({
 
     socket.on('user-connected', (userId,roomId) => {
       loggeduserid=userId
+      console.log("cominggggggggggggggggggg")
      connectToNewUser(userId, stream)
 
 

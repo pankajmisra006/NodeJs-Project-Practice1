@@ -70,9 +70,9 @@ io.on('connection',socket=>{
         //console.log(allroomId)   
         //totalpeerId.set(userId,'person '+connectioncount++)
         //totalpeerId.push(userId)  
-         
+          
       
-        socket.to(roomId).emit('user-connected',userId,roomId); 
+       socket.broadcast.to(roomId).emit('user-connected',userId,roomId); 
         io.to(roomId).emit('availableuserId',userId,roomId, getUserBasedOnRoomId(roomId,removeduplicates(allroomId)),"1") 
         //socket.to(roomId).emit('user-connected',userId); //to every id except the connecting one
        // to every id connected in the socket
