@@ -15,7 +15,7 @@ var senderidtoappend=""
 const myPeer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '3010'             //should be on the same server as application
+    port: '443'             //should be on the same server as application
   })
 
 //enabaling video here//
