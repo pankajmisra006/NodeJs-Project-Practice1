@@ -1,25 +1,27 @@
-
+require('dotenv').config()
 var totalpeerId=new Object()
  
-var connectioncount=0
+var connectioncount=0 
 var id=''
  usersavailable = {}; // or var map = {};
 var allroomId = []; // or var map = {};
 
+var db = require('diskdb');
+const moment=require('moment');
 const express = require('express')
 const app = express()
-// const cors = require('cors')
-// app.use(cors())
 var randomize = require('randomatic');
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+const bodyParser = require('body-parser');
+const jwt=require('jsonwebtoken')
 const { ExpressPeerServer } = require('peer');
 const peerServer = ExpressPeerServer(server, {
   debug: true
 });
 
 app.use('/peerjs', peerServer);
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 //normal rendering to open first page..
@@ -32,7 +34,55 @@ app.get('/page', (req, res) => {
     
     res.render(`chat`)
   })
+///openining page... Login//
 
+app.get('/login',(req,res)=>{
+
+res.render('login')
+})
+
+
+app.post('/loginvalidate',(req,res)=>{
+  console.log(req.body.username)  
+   const username=req.body.username
+   const password=req.body.password
+   const usertype="Admin"
+   //calling diskdb to validate....//
+
+  console.log(username)
+  console.log(password)
+
+   connectObject=connectDb()
+   var userFound=connectObject.credentials.find({UserType:usertype,UserName:username,Password:password}).length;
+   console.log(userFound)  
+
+   if(userFound==1){
+       //user is present... generate a web token..
+
+       const accessToken=generateToken(username,password,usertype)
+       const havemeetingIdFlag=connectObject.credentials.findOne({UserType:usertype,UserName:username,Password:password})
+       console.log(havemeetingIdFlag['MeetingId'].length)
+       if(havemeetingIdFlag['MeetingId'].length==7){
+        
+        res.json(getexistingmeetingId(havemeetingIdFlag['MeetingId']))  //if it already has meeting id
+      }else{
+       const meetingId=generatemeetingId() //generate id
+       updatemeetingId(username,password,usertype,meetingId) //update the crendentials.json
+       res.send(getmeetingDiv(meetingId))  //return the response
+       
+    }
+     }else{ 
+        //not found
+       // res.setHeader('Content-Type', 'application/json');
+        res.type('json')
+        res.send(JSON.stringify(displayInvalidAccess()));
+        //res.send(displayInvalidAccess())
+     }
+    
+  res.render('login')
+  })
+
+//ENDS...//
 
 app.get('/', (req, res) => {
  
@@ -111,6 +161,123 @@ io.on('connection',socket=>{
 
 
 //socket ends..,
+
+var data = {
+  UserType : "Admin",
+  UserName : "Pankaj",
+  Password : "welcome",
+  MeetingId : "12345",
+  CreatedOn : "2/2/2020",
+  IsMeetingIdActive:"True",
+  IsUserActive:"True"
+  
+
+ 
+
+}
+//saveData(data)
+// DATABASE operations starts..////
+function saveData(data){
+
+  dbconnect.credentials.save(data);
+
+}
+
+function updatemeetingId(username,password,usertype,meetingId){
+  const time=moment().format('h:mm a')
+  var query = {
+    UserName : username,
+    Password:password,
+    UserType:usertype
+
+  }; 
+ 
+  var dataToBeUpdate = {
+    MeetingId: meetingId,
+    CreatedOn:time
+  };
+   
+  var options = {
+     multi: false,
+     upsert: true
+  };
+   
+  connectObject=connectDb()
+  var updated = connectObject.credentials.update(query, dataToBeUpdate, options);
+  console.log(updated)
+   return updated
+
+}
+
+function generatemeetingId(){
+return randomize('0', 7)
+
+}
+//DB Connection
+function connectDb(){
+  dbconnect=db.connect('Database', ['credentials']);
+  return dbconnect;
+
+}
+ 
+
+// DATABASE Operation ends../////
+
+
+//Generate a web-token....///
+function generateToken(username,password,usertype){
+  const payload={UserType:usertype,UserName:username,Password:password}
+  const accessToken=jwt.sign(payload,process.env.SECRET_KEY)
+return accessToken
+
+
+
+}
+//function authenticate token
+// function authenticateToken(req,res,next){
+// const authHeader =req.headers['authorization']
+// const token=authHeader && authHeader.split(" ")[1]
+// if(token==null) return res.sendStatus(401)
+
+// jwt.verify(token,process.env.SECRET_KEY,(err,user)=>{
+// if(err) return res.sendStatus(403)
+// req.user=user
+// next()
+
+// })
+
+// }
+
+
+function displayInvalidAccess(){
+  responseData = {
+    'header': ' Invalid Access ! Not Allowed !',
+    'body': '<div id="cross"></div>',
+    'modalcode':'invalid'
+}
+return responseData
+} 
+ 
+ 
+function getmeetingDiv(meetingId){
+  responseData = {
+    'header': ' Your New Meeting ID !',
+    'body': '<div id="meetingidcode">'+meetingId+'</div>',
+    'modalcode':'success'
+}
+return responseData
+}
+
+function getexistingmeetingId(meetingId){
+  responseData = {
+    'header': ' Your Already Have a Meeting ID !',
+    'body': '<div id="meetingidcode">'+meetingId+'</div>',
+    'modalcode':'success'
+}
+return responseData
+}
+
+
 
 //this method removes the duplicates
 function removeduplicates(allroomId){
