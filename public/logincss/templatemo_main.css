@@ -624,3 +624,61 @@ label.light {
    width: 240px;  
 
 } 
+/* 
+registration starts */
+#registerbutton{
+
+  padding: 19px 39px 18px 39px;
+  color: #FFF;
+  background-color: blue;
+  font-size: 18px;
+  text-align: center;
+  font-style: normal;
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid blue;
+  border-width: 1px 1px 3px;
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+  margin-bottom: 10px;
+
+
+}
+.welcome{
+  display:none;
+  float: right;  
+    margin-top: -64px;
+    margin-right: 20px;
+    font-size: large;
+} 
+
+#logoutemoji{
+  font-size: xxx-large;
+  margin-left: 162px;
+}
+
+
+#startmeeting{
+  padding: 19px 39px 18px 39px;
+  color: #FFF;
+  background-color: #4bc970;
+  font-size: 18px;
+  text-align: center;
+  font-style: normal;
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid #3ac162;
+  border-width: 1px 1px 3px;
+  box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+  margin-bottom: 10px;
+}
+
+.media-container {
+  width: 36%;
+  display: inline-block;
+  border: 1px solid rgb(0, 0, 0);
+  /* border-radius: 4px; */
+  overflow: hidden;
+  vertical-align: top;
+  /* background: white; */
+  box-shadow: 0 4px 8px 0 rgb(0 0 0), 0 6px 20px 0 rgb(0 0 0);
+}
